@@ -5,6 +5,7 @@ go 1.17
 require github.com/jpillora/opts v1.2.0
 
 require (
+	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.0.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
@@ -13,6 +14,7 @@ require (
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
 	github.com/ryboe/q v1.0.15 // indirect
 	github.com/spewerspew/spew v0.0.0-20220201233537-1fb8bf5ed3d2 // indirect
+	golang.org/x/sys v0.0.0-20220224120231-95c6836cb0e7 // indirect
 )
 
 replace github.com/jpillora/opts => github.com/VonC/opts v1.1.3

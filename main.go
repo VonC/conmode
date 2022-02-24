@@ -16,6 +16,7 @@ import (
 type Config struct {
 	Arg     string `help:"a string argument"`
 	Version bool   `help:"if true, print Version and exit."`
+	Debug   bool   `help:"if true, print debug info"`
 }
 
 var c = &Config{}
@@ -42,8 +43,10 @@ func main() {
 		os.Exit(0)
 	}
 
-	spew.Dump(c)
-	q.Q(c)
-
+	if c.Debug {
+		spew.Dump(c)
+		q.Q(c)
+	}
 	fmt.Println(os.Args[0])
+	printDefaultConsoleMode()
 }
