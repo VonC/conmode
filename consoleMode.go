@@ -30,9 +30,9 @@ func printDefaultConsoleMode() {
 	fmt.Printf("StdInput consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
 
 	conHandle, conMode = getConsoleMode(windows.STD_OUTPUT_HANDLE)
-	fmt.Printf("StdOutput consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
+	fmt.Printf("StdOutput consoleMode (handle %d) %d: %s\n", conHandle, conMode, DescribeOutputMode(conMode))
 
 	conHandle, conMode = getConsoleMode(windows.STD_ERROR_HANDLE)
-	fmt.Printf("StdError consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
+	fmt.Printf("StdError consoleMode (handle %d) %d: %s\n", conHandle, conMode, DescribeOutputMode(conMode))
 
 }
