@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
-	"myproject/version"
 	"os"
 	"path/filepath"
+
+	"github.com/VonC/conmode/version"
 
 	"github.com/jpillora/opts"
 	"github.com/ryboe/q"
