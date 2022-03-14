@@ -27,6 +27,12 @@ func printDefaultConsoleMode() {
 	// https://github.com/erikgeiser/coninput/blob/main/example/main.go
 	// https://github.com/microsoft/terminal/issues/8750#issuecomment-759088381
 	conHandle, conMode := getConsoleMode(windows.STD_INPUT_HANDLE)
-
 	fmt.Printf("StdInput consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
+
+	conHandle, conMode = getConsoleMode(windows.STD_OUTPUT_HANDLE)
+	fmt.Printf("StdOutput consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
+
+	conHandle, conMode = getConsoleMode(windows.STD_ERROR_HANDLE)
+	fmt.Printf("StdError consoleMode (handle %d) %d: %s\n", conHandle, conMode, coninput.DescribeInputMode(conMode))
+
 }
