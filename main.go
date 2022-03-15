@@ -8,19 +8,19 @@ import (
 
 	"github.com/VonC/conmode/version"
 
-	"github.com/jpillora/opts"
+	"github.com/alecthomas/kong"
 	"github.com/ryboe/q"
 	"github.com/spewerspew/spew"
 )
 
 // Config stores arguments and subcommands
 type Config struct {
-	Arg     string `help:"a string argument"`
-	Version bool   `help:"if true, print Version and exit."`
-	Debug   bool   `help:"if true, print debug info"`
+	Version bool       `help:"if true, print Version and exit." short:"v"`
+	Debug   bool       `help:"if true, print debug info" short:"d"`
+	Display DisplayCmd `cmd:"" default:"" help:"Display console modes"`
 }
 
-var c = &Config{}
+type DisplayCmd struct{}
 
 func fatal(msg string, err error) {
 	if err != nil {
@@ -36,18 +36,25 @@ func main() {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	fatal("Unable to find current program execution directory", err)
 	log.Println(dir)
-	opts.New(c).
-		ConfigPath(filepath.Join(dir, "conf.json")).
-		Parse()
-	if c.Version {
+
+	cli := &Config{}
+	ctx := kong.Parse(cli)
+	// Call the Run() method of the selected parsed command.
+	err = ctx.Run(cli)
+	ctx.FatalIfErrorf(err)
+
+}
+
+func (dc *DisplayCmd) Run(cli *Config) error {
+	if cli.Version {
 		fmt.Println(version.String())
 		os.Exit(0)
 	}
 
-	if c.Debug {
-		spew.Dump(c)
-		q.Q(c)
+	if cli.Debug {
+		spew.Dump(cli)
+		q.Q(cli)
 	}
-	fmt.Println(os.Args[0])
 	printDefaultConsoleMode()
+	return nil
 }
