@@ -4,3 +4,4 @@ conf.json
 a
 *_snapshot
 senv.bat
+*.private
