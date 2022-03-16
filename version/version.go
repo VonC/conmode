@@ -1,26 +1,46 @@
 package version
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
+	"runtime/debug"
+	"strings"
 )
 
-var (
-	// Version semver for syncrepos (set through go build -ldflags)
-	Version string
-	// BuildUser is the user login who initiated the build (set through go build -ldflags)
-	BuildUser string
-	// GitTag is the result of git describe (set through go build -ldflags)
-	GitTag string
-	// BuildDate is the date of build (set through go build -ldflags)
-	BuildDate string
-)
+// https://stackoverflow.com/questions/66285635/how-do-you-use-go-1-16-embed-features-in-subfolders-packages
+var VersionFS embed.FS
 
 // String displays all the version values
 func String() string {
-	res := ""
-	res = res + fmt.Sprintf("Git Tag   : %s\n", GitTag)
-	res = res + fmt.Sprintf("Build User: %s\n", BuildUser)
-	res = res + fmt.Sprintf("Version   : %s\n", Version)
-	res = res + fmt.Sprintf("BuildDate : %s\n", BuildDate)
+	bi := ""
+	info, ok := debug.ReadBuildInfo()
+	if ok {
+		bi = "\n-----------\n"
+		bi = bi + fmt.Sprintf("vcs.revision (%s): %s", buildSetting(info, "vcs"), buildSetting(info, "vcs.revision"))
+		if buildSetting(info, "vcs.modified") == "true" {
+			bi = bi + " (dirty)"
+		}
+		bi = bi + " " + buildSetting(info, "vcs.time")
+	}
+	//spew.Dump(info)
+	ver, err := fs.ReadFile(VersionFS, "version/version")
+	if err != nil {
+		return fmt.Sprintf("Unknown version (%+v)"+bi, err)
+	}
+	res := strings.TrimSpace(string(ver)) + bi
+	ver, err = fs.ReadFile(VersionFS, "version/version.private")
+	if err == nil {
+		res = res + "\n-----------\n" + strings.TrimSpace(string(ver))
+	}
 	return res
+}
+
+func buildSetting(bi *debug.BuildInfo, key string) string {
+	for _, bs := range bi.Settings {
+		if bs.Key == key {
+			return bs.Value
+		}
+	}
+	return "<unknown>"
 }

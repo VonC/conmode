@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"os"
@@ -12,6 +13,9 @@ import (
 	"github.com/ryboe/q"
 	"github.com/spewerspew/spew"
 )
+
+//go:embed version/*
+var versionFs embed.FS
 
 // Config stores arguments and subcommands
 type Config struct {
@@ -31,6 +35,7 @@ func fatal(msg string, err error) {
 // myproject main entry
 func main() {
 
+	version.VersionFS = versionFs
 	var err error
 
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))

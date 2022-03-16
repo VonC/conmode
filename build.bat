@@ -79,7 +79,13 @@ if "%1" == "amd" (
 )
 
 %_info% "Start Building"
-go build %fflag%-ldflags "-X %module_name%/version.GitTag=%gitver% -X %module_name%/version.BuildUser=%USERNAME% -X %module_name%/version.Version=%VERSION% -X %module_name%/version.BuildDate=%dtStamp%" -o %outputname%
+echo %module_name% %VERSION%>"%script_dir%\version\version"
+echo Git Tag       : %gitver%>"%script_dir%\version\version.private"
+echo Build user    : %USERNAME%>>"%script_dir%\version\version.private"
+echo Build Hostname: %COMPUTERNAME%>>"%script_dir%\version\version.private"
+echo Build date    : %dtStamp%>>"%script_dir%\version\version.private"
+
+go build %fflag% -o %outputname%
 
 if errorlevel 1 (
     %_fatal% "ERROR BUILD %module_name%" 3
