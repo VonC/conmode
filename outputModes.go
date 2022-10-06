@@ -16,7 +16,7 @@ var outputModes = []struct {
 	{mode: windows.ENABLE_LVB_GRID_WORLDWIDE, name: "ENABLE_LVB_GRID_WORLDWIDE"},
 }
 
-// ListOutputModes returnes the isolated enabled output modes as a list.
+// ListOutputModes returns the isolated enabled output modes as a list.
 func ListOutputModes(mode uint32) []uint32 {
 	modes := []uint32{}
 
@@ -29,7 +29,7 @@ func ListOutputModes(mode uint32) []uint32 {
 	return modes
 }
 
-// ListOutputModeNames returnes the isolated enabled output mode names as a list.
+// ListOutputModeNames returns the isolated enabled output mode names as a list.
 func ListOutputModeNames(mode uint32) []string {
 	modes := []string{}
 
