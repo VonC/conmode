@@ -6,8 +6,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/VonC/conmode/version"
+	"github.com/erikgeiser/coninput"
 
 	"github.com/alecthomas/kong"
 	"github.com/ryboe/q"
@@ -19,9 +21,15 @@ var versionFs embed.FS
 
 // Config stores arguments and subcommands
 type Config struct {
+<<<<<<< HEAD
 	Version bool       `help:"if true, print Version and exit." short:"v"`
 	Debug   bool       `help:"if true, print debug info" short:"d"`
 	Display DisplayCmd `cmd:"" default:"" help:"Display console modes"`
+=======
+	Mode    string `help:"mode to describe"`
+	Version bool   `help:"if true, print Version and exit."`
+	Debug   bool   `help:"if true, print debug info"`
+>>>>>>> e9efc28 (main.go: display input console mode if -m xxx)
 }
 
 type DisplayCmd struct{}
@@ -60,6 +68,20 @@ func (dc *DisplayCmd) Run(cli *Config) error {
 		spew.Dump(cli)
 		q.Q(cli)
 	}
+<<<<<<< HEAD
 	printDefaultConsoleMode()
 	return nil
+=======
+	fmt.Println(os.Args[0])
+	if c.Mode == "" {
+		printDefaultConsoleMode()
+	} else {
+		var conMode int
+		conMode, err = strconv.Atoi(c.Mode)
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+		fmt.Printf("conmode %d: '%s'\n", conMode, coninput.DescribeInputMode(uint32(conMode)))
+	}
+>>>>>>> e9efc28 (main.go: display input console mode if -m xxx)
 }
