@@ -20,16 +20,14 @@ import (
 var versionFs embed.FS
 
 // Config stores arguments and subcommands
+// From https://github.com/alecthomas/kong/issues/51
 type Config struct {
-<<<<<<< HEAD
-	Version bool       `help:"if true, print Version and exit." short:"v"`
-	Debug   bool       `help:"if true, print debug info" short:"d"`
-	Display DisplayCmd `cmd:"" default:"" help:"Display console modes"`
-=======
-	Mode    string `help:"mode to describe"`
-	Version bool   `help:"if true, print Version and exit."`
-	Debug   bool   `help:"if true, print debug info"`
->>>>>>> e9efc28 (main.go: display input console mode if -m xxx)
+	Version bool `help:"if true, print Version and exit." short:"v"`
+	Debug   bool `help:"if true, print debug info" short:"d"`
+	Mode    struct {
+		Mode    string     `arg:"" default:"" optional:"" help:"Input console Mode code to decrypt"`
+		Display DisplayCmd `cmd:"" default:"" help:"Display console modes"`
+	} `arg`
 }
 
 type DisplayCmd struct{}
@@ -51,7 +49,20 @@ func main() {
 	log.Println(dir)
 
 	cli := &Config{}
+	display := false
+	for _, a := range os.Args {
+		if a == "display" {
+			display = true
+			break
+		}
+	}
+	if !display {
+		os.Args = append(os.Args, "display")
+	}
+	//spew.Dump(os.Args)
 	ctx := kong.Parse(cli)
+	//spew.Dump(cli)
+	//spew.Dump(ctx)
 	// Call the Run() method of the selected parsed command.
 	err = ctx.Run(cli)
 	ctx.FatalIfErrorf(err)
@@ -68,20 +79,15 @@ func (dc *DisplayCmd) Run(cli *Config) error {
 		spew.Dump(cli)
 		q.Q(cli)
 	}
-<<<<<<< HEAD
-	printDefaultConsoleMode()
-	return nil
-=======
 	fmt.Println(os.Args[0])
-	if c.Mode == "" {
+	if cli.Mode.Mode == "" || cli.Mode.Mode == "display" {
 		printDefaultConsoleMode()
 	} else {
-		var conMode int
-		conMode, err = strconv.Atoi(c.Mode)
+		conMode, err := strconv.Atoi(cli.Mode.Mode)
 		if err != nil {
 			log.Fatalf(err.Error())
 		}
 		fmt.Printf("conmode %d: '%s'\n", conMode, coninput.DescribeInputMode(uint32(conMode)))
 	}
->>>>>>> e9efc28 (main.go: display input console mode if -m xxx)
+	return nil
 }
