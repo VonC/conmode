@@ -83,7 +83,7 @@ func (dc *DisplayCmd) Run(cli *Config) error {
 	if cli.Mode.Mode == "" || cli.Mode.Mode == "display" {
 		printDefaultConsoleMode()
 	} else {
-		conMode, err := strconv.Atoi(cli.Mode.Mode)
+		conMode, err := strconv.ParseUint(cli.Mode.Mode, 10, 32)
 		if err != nil {
 			log.Fatalf(err.Error())
 		}
