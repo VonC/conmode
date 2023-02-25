@@ -7,7 +7,7 @@ require (
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f
 	github.com/ryboe/q v1.0.15
 	github.com/spewerspew/spew v0.0.0-20220201233537-1fb8bf5ed3d2
-	golang.org/x/sys v0.0.0-20220224120231-95c6836cb0e7
+	golang.org/x/sys v0.1.0
 )
 
 require (
