@@ -16,6 +16,8 @@ Or decrypt a console mode integer.
   - `windows.STD_ERROR_HANDLE`
 - Input/output modes listed from https://docs.microsoft.com/en-us/windows/console/setconsolemode
 
+[<img src="windows_console.png">](https://docs.microsoft.com/en-us/windows/console/setconsolemode)
+
 ### Decrypt console mode integer
 
 ```bash
